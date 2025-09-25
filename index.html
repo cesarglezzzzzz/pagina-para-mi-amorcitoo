@@ -152,12 +152,12 @@ footer {
     <div class="message">Eres mi magia y mi alegría cada día ✨</div>
     <h2>"Amorus Eternum"</h2>
 
-    <img src="https://i.imgur.com/qZk4IM8.png
+    <img src="https://i.imgur.com/qZk4IM8_d.png?maxwidth=520&shape=thumb&fidelity=high"
          alt="Harry Potter"
          class="wizard-img"
          id="wizard">
 
-    <img src="https://i.imgur.com/3kXXJiO.png
+    <img src="https://i.imgur.com/3kXXJiO_d.png?maxwidth=520&shape=thumb&fidelity=high"
          alt="Varita mágica"
          class="wand"
          id="wand">
@@ -182,6 +182,7 @@ footer {
 
         const wizardRect = wizard.getBoundingClientRect();
         
+        // Ajuste aquí para hacer la varita responsiva
         wand.style.width = wizardRect.width * 0.4 + "px";
         wand.style.left = wizardRect.right - (wizardRect.width * 0.3) + "px";
         wand.style.top = wizardRect.bottom - (wizardRect.height * 0.6) + "px";
@@ -237,7 +238,6 @@ footer {
         document.addEventListener('touchend', onEnd);
     }
 
-    // Unifica la función de la magia para que se active tanto con click como con toque
     function activateMagic() {
         wand.animate([
             { transform: "rotate(0deg)" },
@@ -256,27 +256,22 @@ footer {
         createSparks(tipX, tipY);
     }
     
-    // Aquí es donde se cambia el evento.
-    // Al hacer clic, se activa la magia (para computadoras)
     wand.addEventListener("click", (e) => {
         if (!isDragging) {
             activateMagic();
         }
     });
 
-    // Al tocar (sin arrastrar), se activa la magia (para celulares)
     wand.addEventListener("touchstart", (e) => {
-        // Para evitar que el arrastre inicie la magia inmediatamente
         let touchStart = new Date().getTime();
         setTimeout(() => {
             let touchEnd = new Date().getTime();
             if ((touchEnd - touchStart) < 200 && !isDragging) {
                 activateMagic();
             }
-        }, 50); // Pequeño retraso para diferenciar toque de arrastre
+        }, 50);
     }, { passive: false });
     
-    // Funciones para los efectos mágicos (sin cambios)
     function createHeart(x, y) {
         const heart = document.createElement("div");
         heart.className = "heart";

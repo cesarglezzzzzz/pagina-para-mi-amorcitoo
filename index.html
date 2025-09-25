@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Felices 4 meses mi amor</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    background: radial-gradient(ellipse at bottom, #0b0c2a 0%, #1d1f45 100%);
+    overflow: hidden;
+    font-family: "Poppins", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #fff;
+    flex-direction: column;
+}
+
+.container {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+}
+
+h1 {
+    font-size: clamp(24px, 8vw, 80px);
+    color: #ffd166;
+    text-shadow: 0 0 15px #ffb347, 0 0 25px #ff8c00;
+    margin: 0;
+}
+
+.message {
+    font-size: clamp(16px, 4vw, 40px);
+    color: #ffccff;
+    text-shadow: 0 0 10px #ff66ff, 0 0 20px #ff3399;
+    animation: glowMessage 2s infinite alternate;
+}
+
+@keyframes glowMessage {
+    0% { text-shadow: 0 0 10px #ff66ff, 0 0 20px #ff3399; }
+    100% { text-shadow: 0 0 25px #ffccff, 0 0 40px #ff66ff; }
+}
+
+h2 {
+    font-size: clamp(14px, 3vw, 30px);
+    margin: 2vw 0;
+    color: #ff9aa2;
+}
+
+footer {
+    margin-top: 2vw;
+    font-size: clamp(12px, 2.5vw, 25px);
+    color: #ffb6c1;
+    font-weight: bold;
+}
+
+.heart {
+    position: absolute;
+    font-size: clamp(20px, 4vw, 40px);
+    color: red;
+    pointer-events: none;
+}
+
+.spell {
+    position: absolute;
+    font-size: clamp(20px, 4vw, 40px);
+    font-weight: bold;
+    pointer-events: none;
+    background: linear-gradient(45deg, #ff0000, #ff69b4, #ffcc00, #00ffcc, #66f, #ff00ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 10px #fff, 0 0 20px #ff66ff;
+}
+
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: twinkle 3s infinite alternate;
+}
+
+@keyframes twinkle {
+    0% { opacity: 0.2; }
+    100% { opacity: 1; }
+}
+
+.wizard-img {
+    width: clamp(150px, 30vw, 300px);
+    cursor: default;
+    display: block;
+    position: relative;
+    z-index: 2;
+}
+
+.wand {
+    position: absolute;
+    cursor: grab;
+    z-index: 3;
+    transition: none;
+}
+
+.wand-instruction {
+    position: absolute;
+    font-size: clamp(12px, 2.5vw, 25px);
+    color: #ffe0f0;
+    text-shadow: 0 0 10px #ff66ff, 0 0 20px #ffccff;
+    pointer-events: none;
+    animation: wandGlow 1.5s ease-in-out infinite alternate;
+    width: 200px;
+    text-align: center;
+}
+
+@keyframes wandGlow {
+    0% { opacity: 0.7; text-shadow: 0 0 5px #ff66ff, 0 0 10px #ffccff; }
+    100% { opacity: 1; text-shadow: 0 0 15px #ff66ff, 0 0 30px #ffccff; }
+}
+
+.particle, .spark {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #ff99ff;
+    border-radius: 50%;
+    opacity: 0.8;
+    pointer-events: none;
+}
+
+.spark {
+    width: 6px;
+    height: 6px;
+    background: #fff5cc;
+    box-shadow: 0 0 6px #ffccff, 0 0 12px #ff99ff;
+    border-radius: 50%;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Felices 4 meses mi amor ❤️</h1>
+    <div class="message">Eres mi magia y mi alegría cada día ✨</div>
+    <h2>"Amorus Eternum"</h2>
+
+    <img src="https://i.imgur.com/qZk4IM8.png
+         alt="Harry Potter"
+         class="wizard-img"
+         id="wizard">
+
+    <img src="https://i.imgur.com/3kXXJiO.png
+         alt="Varita mágica"
+         class="wand"
+         id="wand">
+
+    <div class="wand-instruction" id="wandText">Toca la varita y verás la magia ✨</div>
+
+    <footer>Con mucho amor, Carimcito</footer>
+</div>
+
+<script>
+    const wizard = document.getElementById("wizard");
+    const wand = document.getElementById("wand");
+    const wandText = document.getElementById("wandText");
+
+    let isDragging = false;
+    let hasBeenMoved = false;
+    let startX, startY;
+    let initialLeft, initialTop;
+
+    function positionWandAndText() {
+        if (hasBeenMoved) return;
+
+        const wizardRect = wizard.getBoundingClientRect();
+        
+        wand.style.width = wizardRect.width * 0.4 + "px";
+        wand.style.left = wizardRect.right - (wizardRect.width * 0.3) + "px";
+        wand.style.top = wizardRect.bottom - (wizardRect.height * 0.6) + "px";
+        
+        const wandRect = wand.getBoundingClientRect();
+        wandText.style.left = wandRect.right + 20 + "px";
+        wandText.style.top = wandRect.top + "px";
+    }
+
+    function makeWandMovable() {
+        const onStart = (e) => {
+            e.preventDefault(); 
+            isDragging = true;
+            hasBeenMoved = true;
+            wandText.style.display = 'none';
+
+            const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+
+            startX = clientX;
+            startY = clientY;
+            initialLeft = wand.offsetLeft;
+            initialTop = wand.offsetTop;
+            wand.style.position = 'absolute';
+            wand.style.cursor = 'grabbing';
+        };
+
+        const onMove = (e) => {
+            if (!isDragging) return;
+
+            const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+
+            const dx = clientX - startX;
+            const dy = clientY - startY;
+
+            wand.style.left = initialLeft + dx + 'px';
+            wand.style.top = initialTop + dy + 'px';
+        };
+
+        const onEnd = () => {
+            isDragging = false;
+            wand.style.cursor = 'grab';
+        };
+
+        wand.addEventListener('mousedown', onStart);
+        wand.addEventListener('touchstart', onStart, { passive: false });
+        
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('touchmove', onMove, { passive: false });
+
+        document.addEventListener('mouseup', onEnd);
+        document.addEventListener('touchend', onEnd);
+    }
+
+    // Unifica la función de la magia para que se active tanto con click como con toque
+    function activateMagic() {
+        wand.animate([
+            { transform: "rotate(0deg)" },
+            { transform: "rotate(-20deg) translateY(-5px)" },
+            { transform: "rotate(15deg) translateY(5px)" },
+            { transform: "rotate(0deg)" }
+        ], { duration: 400, easing: "ease-in-out" });
+
+        const wandRect = wand.getBoundingClientRect();
+        const tipX = wandRect.left + wandRect.width - 10;
+        const tipY = wandRect.top + wandRect.height / 2;
+
+        for (let i = 0; i < 10; i++) createHeart(tipX, tipY);
+        createSpell(tipX, tipY);
+        createParticles(tipX, tipY);
+        createSparks(tipX, tipY);
+    }
+    
+    // Aquí es donde se cambia el evento.
+    // Al hacer clic, se activa la magia (para computadoras)
+    wand.addEventListener("click", (e) => {
+        if (!isDragging) {
+            activateMagic();
+        }
+    });
+
+    // Al tocar (sin arrastrar), se activa la magia (para celulares)
+    wand.addEventListener("touchstart", (e) => {
+        // Para evitar que el arrastre inicie la magia inmediatamente
+        let touchStart = new Date().getTime();
+        setTimeout(() => {
+            let touchEnd = new Date().getTime();
+            if ((touchEnd - touchStart) < 200 && !isDragging) {
+                activateMagic();
+            }
+        }, 50); // Pequeño retraso para diferenciar toque de arrastre
+    }, { passive: false });
+    
+    // Funciones para los efectos mágicos (sin cambios)
+    function createHeart(x, y) {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerText = "❤️";
+        document.body.appendChild(heart);
+        heart.style.left = x + "px";
+        heart.style.top = y + "px";
+        const dx = (Math.random() - 0.5) * 200;
+        const dy = -200 - Math.random() * 150;
+        heart.animate([
+            { transform: `translate(0,0) scale(1)`, opacity: 1 },
+            { transform: `translate(${dx}px, ${dy}px) scale(2)`, opacity: 0 }
+        ], { duration: 3000, easing: "ease-out" });
+        setTimeout(() => heart.remove(), 3000);
+    }
+
+    function createSpell(x, y) {
+        const spell = document.createElement("div");
+        spell.className = "spell";
+        spell.innerText = "Amorus Eternum";
+        document.body.appendChild(spell);
+        spell.style.left = x - 50 + "px";
+        spell.style.top = y - 40 + "px";
+        setTimeout(() => spell.remove(), 3000);
+    }
+
+    function createParticles(x, y) {
+        for (let i = 0; i < 15; i++) {
+            const particle = document.createElement("div");
+            particle.className = "particle";
+            particle.style.left = x + (Math.random() - 0.5) * 50 + "px";
+            particle.style.top = y + (Math.random() - 0.5) * 10 + "px";
+            const dx = (Math.random() - 0.5) * 60;
+            const dy = -Math.random() * 60;
+            particle.animate([
+                { transform: `translate(0,0) scale(1)`, opacity: 1 },
+                { transform: `translate(${dx}px, ${dy}px) scale(0.5)`, opacity: 0 }
+            ], { duration: 2000, easing: "ease-out" });
+            document.body.appendChild(particle);
+            setTimeout(() => particle.remove(), 2000);
+        }
+    }
+
+    function createSparks(x, y) {
+        for (let i = 0; i < 10; i++) {
+            const spark = document.createElement("div");
+            spark.className = "spark";
+            spark.style.left = x + (Math.random() - 0.5) * 50 + "px";
+            spark.style.top = y + (Math.random() - 0.5) * 10 + "px";
+            const dx = (Math.random() - 0.5) * 100;
+            const dy = -Math.random() * 100;
+            spark.animate([
+                { transform: `translate(0,0) scale(1)`, opacity: 1 },
+                { transform: `translate(${dx}px, ${dy}px) scale(0.3)`, opacity: 0 }
+            ], { duration: 1500, easing: "ease-out" });
+            document.body.appendChild(spark);
+            setTimeout(() => spark.remove(), 1500);
+        }
+    }
+
+    function createStar() {
+        const star = document.createElement("div");
+        star.className = "star";
+        const size = Math.random() * 3 + 2;
+        star.style.width = star.style.height = size + "px";
+        star.style.left = Math.random() * window.innerWidth + "px";
+        star.style.top = Math.random() * window.innerHeight + "px";
+        star.style.animationDuration = 2 + Math.random() * 3 + "s";
+        document.body.appendChild(star);
+        setTimeout(() => star.remove(), 5000);
+    }
+    setInterval(createStar, 100);
+
+    window.addEventListener('load', positionWandAndText);
+    window.addEventListener('resize', positionWandAndText);
+    makeWandMovable();
+</script>
+
+</body>
+</html>
